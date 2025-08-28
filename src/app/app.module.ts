@@ -25,6 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatChipsModule } from '@angular/material/chips'
   // import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
      //    MatSortModule, MatTableModule } from "@angular/material";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -50,8 +51,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatCardModule,
     MatSortModule,
     MatPaginatorModule,
-    MatListModule
-
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     provideAnimationsAsync()

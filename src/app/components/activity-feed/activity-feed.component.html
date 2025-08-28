@@ -5,7 +5,7 @@
       </mat-card-header>
       <mat-card-content>
         <div class="activity-list" #scrollContainer>
-          <div *ngFor="let activity of activities; trackBy: trackByFn" 
+          <div *ngFor="let activity of activities" 
                class="activity-item"
                [ngClass]="getActivityClass(activity.status)">
             <div class="activity-time">{{activity.timestamp | date:'HH:mm:ss'}}</div>

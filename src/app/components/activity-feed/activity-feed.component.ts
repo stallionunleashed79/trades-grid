@@ -48,7 +48,16 @@ export class ActivityFeedComponent implements OnInit{
   }
   getStatusColor(activity: any){
     return "yellow";
-
   }
 
+  getActivityClass(status: string | undefined): string {
+    switch (status) {
+      case 'UPLOADED': return 'activity-class';
+      case 'VALIDATED': return 'activity-class';
+      case 'VALIDATION_FAILED': return 'activity-class';
+      case 'SETTLED': return 'activity-class';
+      case 'FAILED': return 'activity-class';
+      default: return 'Unknown status';
+    } 
+  }
 }

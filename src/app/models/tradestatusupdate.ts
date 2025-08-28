@@ -4,7 +4,7 @@ export class Tradestatusupdate {
   price?: number;
   side?: string;
   traderId?: number;
-  Timestamp?: Date;
+  timestamp?: Date;
   createdAt?: Date;
   updatedAt?: Date;
   status?: string;
