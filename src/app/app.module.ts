@@ -29,6 +29,7 @@ import { MatChipsModule } from '@angular/material/chips'
   // import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
      //    MatSortModule, MatTableModule } from "@angular/material";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AgGridAngular } from "ag-grid-angular";
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     HeaderComponent,
     ShowRecordComponent,
     ActivityFeedComponent
-   
   ],
   imports: [
     MatSidenavModule,
@@ -52,7 +52,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatSortModule,
     MatPaginatorModule,
     MatListModule,
-    MatChipsModule
+    MatChipsModule,
+    AgGridAngular
   ],
   providers: [
     provideAnimationsAsync()

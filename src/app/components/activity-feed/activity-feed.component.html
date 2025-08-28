@@ -1,24 +1,21 @@
-
-    <mat-card class="activity-feed">
-      <mat-card-header>
-        <mat-card-title>Recent Activity</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="activity-list" #scrollContainer>
-          <div *ngFor="let activity of activities" 
-               class="activity-item"
-               [ngClass]="getActivityClass(activity.status)">
-            <div class="activity-time">{{activity.timestamp | date:'HH:mm:ss'}}</div>
-            <div class="activity-content">
-              <strong>{{activity.tradeId}}</strong> - {{getStatusMessage(activity)}}
-            </div>
-            <div class="activity-status">
-              <mat-chip [color]="getStatusColor(activity.status)">
-                {{activity.status}}
-              </mat-chip>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
+   <div class="trades-panel">
+    <div class="button-panel">
+      <a routerLink="/file-upload" routerLinkActive="router-link-active" #rla="routerLinkActive">ALL</a>
+      <a routerLink="/file-upload" routerLinkActive="router-link-active" #rla="routerLinkActive">TRADER1</a>
+      <a routerLink="/file-upload" routerLinkActive="router-link-active" #rla="routerLinkActive">TRADER2</a>
+      <a routerLink="/file-upload" routerLinkActive="router-link-active" #rla="routerLinkActive">BUY</a>
+      <a routerLink="/file-upload" routerLinkActive="router-link-active" #rla="routerLinkActive">SELL</a>
+      <!-- Add more buttons as needed -->
+    </div>
+    <ag-grid-angular
+        style="width: 100%; height: 512px;"
+        class="ag-theme-quartz"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [pagination]="true"
+        [paginationPageSize]="10"
+        [defaultColDef]="defaultColDef"
+        [enableAdvancedFilter]="true"
+        (gridReady)="onGridReady($event)"
+      ></ag-grid-angular>
+    </div>

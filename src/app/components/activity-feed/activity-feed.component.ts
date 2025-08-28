@@ -1,28 +1,59 @@
-import { Component, ElementRef, OnInit,ViewChild} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild
+   } from '@angular/core';
 import { Trade } from '../../models/trade.model';
-import { Tradestatusupdate } from '../../models/tradestatusupdate';
+import { TradeStatusUpdate } from '../../models/tradestatusupdate';
 import { FileUploadService } from '../../services/file-upload.service';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import type {
+  ColDef,
+  GridReadyEvent,
+} from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+type IRow = Trade
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 @Component({
   selector: 'activity-feed',
   templateUrl: './activity-feed.component.html',
   styleUrl: './activity-feed.component.css'
 })
-export class ActivityFeedComponent implements OnInit{
-  activities: Tradestatusupdate[] = [];
-   color: string = '';
+export class ActivityFeedComponent implements OnInit, OnDestroy {
+  activities: TradeStatusUpdate[] = [];
+  trades: Trade[] = [];
+  color: string = '';
+  tradeStatusSubscription: Subscription | undefined
+  columnDefs: any[];
+  rowData: Trade[] = []
+  gridOptions: any;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  defaultColDef: ColDef = {
+    filter: true,
+    editable: true
+  };
   
-    constructor(private uploadService: FileUploadService,
-      private router: Router) { }
+  constructor(private uploadService: FileUploadService){
+  this.columnDefs = [
+      { headerName: 'Trade ID', field: 'tradeId' },
+      { headerName: 'Symbol', field: 'symbol' },
+      { headerName: 'Quantity', field: 'quantity' },
+      { headerName: 'Price', field: 'price' },
+      { headerName: 'Side', field: 'side' },
+      { headerName: 'Status', field: 'status' },
+      { headerName: 'Trader ID', field: 'traderId' }
+  ] as ColDef<IRow>[]
+
+  }
+  ngOnDestroy(): void {
+    this.tradeStatusSubscription?.unsubscribe();
+  }
   ngOnInit() {
-    this.uploadService.connectToStatusStream()
+    this.tradeStatusSubscription = this.uploadService.connectToStatusStream()
       .subscribe(update => {
         this.addActivity(update);
       });
   }
   
-  private addActivity(update: Tradestatusupdate) {
+  private addActivity(update: TradeStatusUpdate) {
     this.activities.unshift(update);
     
     // Keep only last 50 activities
@@ -36,7 +67,7 @@ export class ActivityFeedComponent implements OnInit{
     });
   }
   
-  getStatusMessage(activity: Tradestatusupdate): string {
+  getStatusMessage(activity: TradeStatusUpdate): string {
     switch (activity.status) {
       case 'UPLOADED': return 'File uploaded successfully';
       case 'VALIDATED': return 'Validation completed';
@@ -60,4 +91,12 @@ export class ActivityFeedComponent implements OnInit{
       default: return 'Unknown status';
     } 
   }
+
+   onGridReady(params: GridReadyEvent) {
+     this.uploadService.getAllRecords()
+      .subscribe(result => {
+        this.rowData = result;
+        console.log(`TRADES ${JSON.stringify(this.trades)}`)
+      });
+    }
 }

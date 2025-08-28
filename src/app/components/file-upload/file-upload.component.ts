@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileUploadService } from '../../services/file-upload.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-file-upload',
@@ -17,7 +18,7 @@ export class FileUploadComponent implements OnInit {
   message = '';
   fileInfos?: Observable<any>;
 
-  constructor(private uploadService: FileUploadService) {}
+  constructor(private uploadService: FileUploadService, private router: Router) {}
 
   ngOnInit(): void {
     this.fileInfos = this.uploadService.getFiles();
@@ -40,17 +41,14 @@ export class FileUploadComponent implements OnInit {
       this.uploadService.upload(this.currentFile).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
-            alert("next if");
             this.progress = Math.round((100 * event.loaded) / event.total);
           } else if (event instanceof HttpResponse) {
-             alert("next else if");
             this.message = event.body.message;
             this.fileInfos = this.uploadService.getFiles();
           }
         },
         error: (err: any) => {
           console.log(err);
-          alert(err);
          // if (err.error && err.error.message) {
           //  this.message = err.error.message;
          // } else {
@@ -62,6 +60,7 @@ export class FileUploadComponent implements OnInit {
         },
         complete: () => {
           this.currentFile = undefined;
+          this.router.navigate(['/activity-feed'])
         }
       });
     }

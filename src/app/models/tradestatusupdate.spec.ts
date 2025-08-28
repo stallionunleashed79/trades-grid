@@ -1,7 +1,7 @@
-import { Tradestatusupdate } from './tradestatusupdate';
+import { TradeStatusUpdate } from './tradestatusupdate';
 
 describe('Tradestatusupdate', () => {
   it('should create an instance', () => {
-    expect(new Tradestatusupdate()).toBeTruthy();
+    expect(new TradeStatusUpdate()).toBeTruthy();
   });
 });

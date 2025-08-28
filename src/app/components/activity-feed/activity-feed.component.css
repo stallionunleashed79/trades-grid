@@ -1,0 +1,13 @@
+ .trades-panel .ag-paging-panel {
+        display: flex;
+        justify-content: flex-start; /* Centers horizontally */
+        align-items: center; /* Centers vertically if needed */
+}
+.button-panel {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    > * {
+        margin: 10px 30px 10px 30px;
+    }
+}

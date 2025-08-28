@@ -2,22 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Trade } from '../models/trade.model';
-import { Tradestatusupdate } from '../models/tradestatusupdate';
+import { TradeStatusUpdate } from '../models/tradestatusupdate';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
   private baseUrl = 'http://localhost:8081';
-  private baseUrl1 = '';
+  private baseUrl1 = `${this.baseUrl}/api/trades/upload`;
   private eventSource?: EventSource;
-
 
   constructor(private http: HttpClient) { }
 
   upload(file: File): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
-    this.baseUrl1 = 'http://localhost:8081/api/trades/upload';
+    const formData: FormData = new FormData(); 
     formData.append('file', file);
 
     const req = new HttpRequest('POST', `${this.baseUrl1}`, formData, {
@@ -31,22 +29,17 @@ export class FileUploadService {
   getFiles(): Observable<any> {
     return this.http.get(`${this.baseUrl1}`);
   }
-  //getAllRecords(){
-   // return this.http.get(`${this.baseUrl}/records`);
-//  }
- // getUserList(): Observable<User[]> {
-   // return this.httpClient.get<User[]>(`${this.basUrl}`);
-// }
+
   getAllRecords(): Observable<Trade[]> {
-    return this.http.get<Trade[]>('${this.baseUrl}/records');
+    return this.http.get<Trade[]>(`${this.baseUrl}/api/trades`);
   }
-  //start
-connectToStatusStream(): Observable<Tradestatusupdate> {
+
+  connectToStatusStream(): Observable<TradeStatusUpdate> {
     return new Observable(observer => {
       this.eventSource = new EventSource('/api/trades/status/stream');
       
       this.eventSource.addEventListener('trade-status', (event) => {
-        const update: Tradestatusupdate = JSON.parse(event.data);
+        const update: TradeStatusUpdate = JSON.parse(event.data);
         observer.next(update);
       });
 
@@ -60,6 +53,4 @@ connectToStatusStream(): Observable<Tradestatusupdate> {
       };
     });
   }
-
-  //end
 }

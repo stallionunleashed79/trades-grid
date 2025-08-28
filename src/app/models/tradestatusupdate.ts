@@ -1,4 +1,4 @@
-export class Tradestatusupdate {
+export class TradeStatusUpdate {
   tradeId?: number;
   quantity?: number;
   price?: number;
