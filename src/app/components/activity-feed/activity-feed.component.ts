@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild
    } from '@angular/core';
-import { Trade } from '../../models/trade.model';
-import { TradeStatusUpdate } from '../../models/tradestatusupdate';
+import { Trade } from '../../models/trade';
+import { TradeStatusUpdate } from '../../models/trade';
 import { FileUploadService } from '../../services/file-upload.service';
 import { Subscription } from 'rxjs';
 import type {

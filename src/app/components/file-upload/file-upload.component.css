@@ -7,3 +7,19 @@ loader {
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
+
+.trades-panel .ag-paging-panel, .upload-section, .button-panel {
+        display: flex;
+        justify-content: flex-start; /* Centers horizontally */
+        align-items: center; /* Centers vertically if needed */
+}
+.button-panel {
+    align-items: center;
+    > * {
+        margin: 10px 30px 10px 30px;
+    }
+}
+.upload-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

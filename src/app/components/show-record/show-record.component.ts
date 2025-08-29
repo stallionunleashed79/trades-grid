@@ -3,7 +3,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 
 import { Component, OnInit, ViewChild,Input } from '@angular/core';
-import { Trade } from '../../models/trade.model';
+import { Trade } from '../../models/trade';
 //import {MatPaginator} from '@angular/material/paginator';
 //import {MatTableDataSource} from '@angular/material/table';
 import { CommonModule } from '@angular/common';

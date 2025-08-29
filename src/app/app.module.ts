@@ -30,6 +30,7 @@ import { MatChipsModule } from '@angular/material/chips'
      //    MatSortModule, MatTableModule } from "@angular/material";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AgGridAngular } from "ag-grid-angular";
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,8 @@ import { AgGridAngular } from "ag-grid-angular";
     MatPaginatorModule,
     MatListModule,
     MatChipsModule,
-    AgGridAngular
+    AgGridAngular, 
+    AgGridModule
   ],
   providers: [
     provideAnimationsAsync()

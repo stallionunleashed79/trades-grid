@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Trade } from '../models/trade.model';
-import { TradeStatusUpdate } from '../models/tradestatusupdate';
+import { Trade } from '../models/trade';
+import { TradeStatusUpdate } from '../models/trade';
 
 @Injectable({
   providedIn: 'root'

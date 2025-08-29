@@ -1,4 +1,4 @@
-import { TradeStatusUpdate } from './tradestatusupdate';
+import { TradeStatusUpdate } from './trade';
 
 describe('Tradestatusupdate', () => {
   it('should create an instance', () => {
