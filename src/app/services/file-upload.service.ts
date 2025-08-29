@@ -1,18 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Trade } from '../models/trade';
 import { TradeStatusUpdate } from '../models/trade';
+import { IGetRowsParams, IServerSideDatasource, IServerSideGetRowsParams } from 'ag-grid-community';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FileUploadService {
+export class FileUploadService implements IServerSideDatasource {
   private baseUrl = 'http://localhost:8081';
   private baseUrl1 = `${this.baseUrl}/api/trades/upload`;
   private eventSource?: EventSource;
 
   constructor(private http: HttpClient) { }
+  getRows(params: IServerSideGetRowsParams<any, any>): void {
+    const request = params.request;
+    this.http.post<any>(`${this.baseUrl}/api/trades`, request)
+      .pipe(
+        map(response => ({ rows: response.rows, lastRow: response.lastRow }))
+      ).subscribe(
+        data => params.success(data.rows),
+        fail => params.fail()
+      )
+  }
 
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData(); 
@@ -30,13 +41,13 @@ export class FileUploadService {
     return this.http.get(`${this.baseUrl1}`);
   }
 
-  getAllRecords(): Observable<Trade[]> {
-    return this.http.get<Trade[]>(`${this.baseUrl}/api/trades`);
+  getAllRecords(params: IGetRowsParams): Observable<Trade[]> {
+    return this.http.post<Trade[]>(`${this.baseUrl}/api/trades`, params);
   }
 
   connectToStatusStream(): Observable<TradeStatusUpdate> {
     return new Observable(observer => {
-      this.eventSource = new EventSource('/api/trades/status/stream');
+      this.eventSource = new EventSource(`${this.baseUrl}/api/trades/status/stream`);
       
       this.eventSource.addEventListener('trade-status', (event) => {
         const update: TradeStatusUpdate = JSON.parse(event.data);

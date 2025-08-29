@@ -3,10 +3,13 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild
 import { Trade } from '../../models/trade';
 import { TradeStatusUpdate } from '../../models/trade';
 import { FileUploadService } from '../../services/file-upload.service';
-import { Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import type {
   ColDef,
+  GridApi,
   GridReadyEvent,
+  IGetRowsParams,
+  IServerSideGetRowsParams,
 } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 type IRow = Trade
@@ -30,17 +33,27 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
     filter: true,
     editable: true
   };
+  gridApi: GridApi | undefined
   
   constructor(private uploadService: FileUploadService){
-  this.columnDefs = [
-      { headerName: 'Trade ID', field: 'tradeId' },
-      { headerName: 'Symbol', field: 'symbol' },
-      { headerName: 'Quantity', field: 'quantity' },
-      { headerName: 'Price', field: 'price' },
-      { headerName: 'Side', field: 'side' },
-      { headerName: 'Status', field: 'status' },
-      { headerName: 'Trader ID', field: 'traderId' }
-  ] as ColDef<IRow>[]
+    this.columnDefs = [
+          { headerName: 'Trade ID', field: 'tradeId' },
+          { headerName: 'Symbol', field: 'symbol' },
+          { headerName: 'Quantity', field: 'quantity' },
+          { headerName: 'Price', field: 'price' },
+          { headerName: 'Side', field: 'side' },
+          { headerName: 'Status', field: 'status' },
+          { headerName: 'Trader ID', field: 'traderId' }
+      ] as ColDef<IRow>[]
+
+    this.gridOptions = {
+      rowSelection: 'single',
+      cacheBlockSize: 100,
+      maxBlocksInCache: 2,
+      rowModelType: 'infinite',
+      pagination: true, 
+      paginationAutoPageSize: true
+    };
 
   }
   ngOnDestroy(): void {
@@ -92,11 +105,24 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
     } 
   }
 
-   onGridReady(params: GridReadyEvent) {
-     this.uploadService.getAllRecords()
-      .subscribe(result => {
-        this.rowData = result;
-        console.log(`TRADES ${JSON.stringify(this.trades)}`)
-      });
+    private getRowData(params: IGetRowsParams): Observable<any> {
+      return this.uploadService.getAllRecords(params)
+          .pipe(
+              map((res: any) => {
+                console.log(`RESPONSE ${JSON.stringify(res)}`)
+                return res.data
+              })
+            );
+    }
+
+    onGridReady(params: GridReadyEvent) {
+      this.gridApi = params.api;
+      const datasource = {
+        getRows: (params: IGetRowsParams) => {
+          this.getRowData(params).subscribe(data => 
+            params.successCallback(data.rows));
+        }
+      };
+      this.gridApi.setGridOption('datasource', datasource);
     }
 }
