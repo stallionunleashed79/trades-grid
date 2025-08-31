@@ -1,7 +1,42 @@
   <div class="trades-panel">
+    <form class="query-section" (ngSubmit) = "performSearch()">
+      <div class="first-row">
+        <mat-form-field>
+          <mat-label>Symbol</mat-label>
+          <input matInput placeholder = "Symbol" type="string" name="symbol" [(ngModel)]="filterModel.symbol"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Side</mat-label>
+          <input matInput placeholder = "Side" type="string" name="side" [(ngModel)]="filterModel.side"/>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="filterModel.status" name="propertyType">
+            <mat-option *ngFor="let type of tradeStatus | keyvalue" [value]="type.value">
+              {{ type.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button type="submit">Search</button>
+      </div>
+      <div class="second-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Trade Date Begin</mat-label>
+          <input matInput [matDatepicker]="pickerBegin" [(ngModel)]="filterModel.tradeDateBegin" name="tradeDateBegin">
+          <mat-datepicker-toggle matSuffix [for]="pickerBegin"></mat-datepicker-toggle>
+          <mat-datepicker #pickerBegin></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Trade Date End</mat-label>
+          <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="filterModel.tradeDateEnd" name="tradeDateEnd">
+          <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
     <ag-grid-angular
-      style="width: 100%; height: 512px;"
-      class="ag-theme-quartz"
+      style="width: 95%; height: 512px;"
+      class="ag-theme-quartz data-grid"
       [columnDefs]="columnDefs"
       [gridOptions]="gridOptions"
       [enableAdvancedFilter]="true"

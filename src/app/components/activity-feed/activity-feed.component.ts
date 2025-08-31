@@ -12,6 +12,8 @@ import type {
 } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { TradeFilter } from '../../models/trade.filter';
+import { TradeStatus } from '../../models/trade.status';
+
 type IRow = Trade
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -34,7 +36,9 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
     editable: true
   };
   gridApi: GridApi | undefined
-  
+  filterModel : TradeFilter = {}
+  tradeStatus = TradeStatus
+
   constructor(private uploadService: FileUploadService){
     this.columnDefs = [
           { headerName: 'Trade ID', field: 'tradeId', filter: 'agTextColumnFilter' },
@@ -80,6 +84,9 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
     });
   }
   
+  performSearch() {
+    console.log(`FILTER MODEL ${JSON.stringify(this.filterModel)}`)
+  }
   getStatusMessage(activity: TradeStatusUpdate): string {
     switch (activity.status) {
       case 'UPLOADED': return 'File uploaded successfully';
@@ -117,14 +124,9 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
 
     onGridReady(params: GridReadyEvent) {
       this.gridApi = params.api;
-      const filterModel : TradeFilter = {
-        side: 'BUY',
-        symbol: 'AAPL',
-        status: 'UPLOADED'
-      }
       const datasource = {
         getRows: (params: IGetRowsParams) => {
-          params = {...params, filterModel }
+          params = {...params, filterModel: this.filterModel }
           this.getRowData(params).subscribe(data => 
             params.successCallback(data));
         }

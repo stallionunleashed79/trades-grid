@@ -1,13 +1,13 @@
- .trades-panel .ag-paging-panel {
-        display: flex;
-        justify-content: flex-start; /* Centers horizontally */
-        align-items: center; /* Centers vertically if needed */
+.trades-panel {
+    margin-top: 1rem;
 }
-.button-panel {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+
+.first-row, .second-row {
     > * {
-        margin: 10px 30px 10px 30px;
+        margin-left: 1rem;
     }
+}
+.data-grid {
+    margin-left: 1rem;
+    margin-right: 1rem;
 }

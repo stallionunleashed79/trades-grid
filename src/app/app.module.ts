@@ -20,17 +20,18 @@ import { HeaderComponent } from './components/header/header.component';
    import { AgGridModule } from 'ag-grid-angular';
      import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatFormField, MatLabel, MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips'
-  // import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
-     //    MatSortModule, MatTableModule } from "@angular/material";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AgGridAngular } from "ag-grid-angular";
-import { CommonModule } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,8 +46,8 @@ import { CommonModule } from '@angular/common';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-     AgGridModule,
-      MatTableModule,
+    AgGridModule,
+    MatTableModule,
     MatInputModule,
     MatSelectModule,
     MatCardModule,
@@ -54,8 +55,15 @@ import { CommonModule } from '@angular/common';
     MatPaginatorModule,
     MatListModule,
     MatChipsModule,
-    AgGridAngular, 
-    AgGridModule
+    AgGridAngular,
+    FormsModule,
+    MatButton,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     provideAnimationsAsync()
