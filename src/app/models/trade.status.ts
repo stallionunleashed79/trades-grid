@@ -1,4 +1,5 @@
 export enum TradeStatus {
     Uploaded = 'Uploaded',
-    Validated = 'Validated'
+    Validated = 'Validated',
+    Settled = 'Settled'
 }
