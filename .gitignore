@@ -1,2 +1,6 @@
 node_modules/
 .angular/
+/.DS_Store
+src/.DS_Store
+src/app/.DS_Store
+src/app/components/.DS_Store

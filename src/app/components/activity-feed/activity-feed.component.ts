@@ -36,7 +36,7 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
     editable: true,
     width: 160
   };
-  gridApi: GridApi | undefined
+  gridApi!: GridApi
   filterModel : TradeFilter = {}
   tradeStatus = TradeStatus
 
@@ -88,6 +88,7 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
   
   performSearch() {
     console.log(`FILTER MODEL ${JSON.stringify(this.filterModel)}`)
+    this.gridApi.setGridOption('datasource', this.createServerSideDatasource());
   }
   getStatusMessage(activity: TradeStatusUpdate): string {
     switch (activity.status) {
@@ -124,15 +125,18 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
             );
     }
 
-    onGridReady(params: GridReadyEvent) {
-      this.gridApi = params.api;
-      const datasource = {
+    createServerSideDatasource(){
+      return {
         getRows: (params: IGetRowsParams) => {
           params = {...params, filterModel: this.filterModel }
           this.getRowData(params).subscribe(data => 
             params.successCallback(data));
         }
       };
-      this.gridApi.setGridOption('datasource', datasource);
+    }
+
+    onGridReady(params: GridReadyEvent) {
+      this.gridApi = params.api;
+      this.gridApi.setGridOption('datasource', this.createServerSideDatasource());
     }
 }
