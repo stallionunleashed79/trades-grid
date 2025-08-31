@@ -33,7 +33,8 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   defaultColDef: ColDef = {
     filter: true,
-    editable: true
+    editable: true,
+    width: 160
   };
   gridApi: GridApi | undefined
   filterModel : TradeFilter = {}
@@ -47,7 +48,8 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
           { headerName: 'Price', field: 'price' },
           { headerName: 'Side', field: 'side' },
           { headerName: 'Status', field: 'status' },
-          { headerName: 'Trader ID', field: 'traderId' }
+          { headerName: 'Trader ID', field: 'traderId' },
+          { headerName: 'Trade Date', field: 'tradeDate'}
       ] as ColDef<IRow>[]
 
     this.gridOptions = {
