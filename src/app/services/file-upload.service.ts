@@ -8,22 +8,12 @@ import { IGetRowsParams, IServerSideDatasource, IServerSideGetRowsParams } from 
 @Injectable({
   providedIn: 'root'
 })
-export class FileUploadService implements IServerSideDatasource {
+export class FileUploadService {
   private baseUrl = 'http://localhost:8081';
   private baseUrl1 = `${this.baseUrl}/api/trades/upload`;
   private eventSource?: EventSource;
 
   constructor(private http: HttpClient) { }
-  getRows(params: IServerSideGetRowsParams<any, any>): void {
-    const request = params.request;
-    this.http.post<any>(`${this.baseUrl}/api/trades`, request)
-      .pipe(
-        map(response => ({ rows: response.rows, lastRow: response.lastRow }))
-      ).subscribe(
-        data => params.success(data.rows),
-        fail => params.fail()
-      )
-  }
 
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData(); 

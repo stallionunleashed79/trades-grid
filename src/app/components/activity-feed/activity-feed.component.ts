@@ -8,10 +8,10 @@ import type {
   ColDef,
   GridApi,
   GridReadyEvent,
-  IGetRowsParams,
-  IServerSideGetRowsParams,
+  IGetRowsParams
 } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+import { TradeFilter } from '../../models/trade.filter';
 type IRow = Trade
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -37,7 +37,7 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
   
   constructor(private uploadService: FileUploadService){
     this.columnDefs = [
-          { headerName: 'Trade ID', field: 'tradeId' },
+          { headerName: 'Trade ID', field: 'tradeId', filter: 'agTextColumnFilter' },
           { headerName: 'Symbol', field: 'symbol' },
           { headerName: 'Quantity', field: 'quantity' },
           { headerName: 'Price', field: 'price' },
@@ -117,10 +117,16 @@ export class ActivityFeedComponent implements OnInit, OnDestroy {
 
     onGridReady(params: GridReadyEvent) {
       this.gridApi = params.api;
+      const filterModel : TradeFilter = {
+        side: 'BUY',
+        symbol: 'AAPL',
+        status: 'UPLOADED'
+      }
       const datasource = {
         getRows: (params: IGetRowsParams) => {
+          params = {...params, filterModel }
           this.getRowData(params).subscribe(data => 
-            params.successCallback(data.rows));
+            params.successCallback(data));
         }
       };
       this.gridApi.setGridOption('datasource', datasource);
